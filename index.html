@@ -6,10 +6,10 @@
     <title>MINI Cooper — Pruébate la actitud | Case Study</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ============================================
-           CSS RESET & BASE STYLES
+           CSS RESET & CUSTOM PROPERTIES
         ============================================ */
         *, *::before, *::after {
             margin: 0;
@@ -20,21 +20,27 @@
         :root {
             --color-black: #0a0a0a;
             --color-white: #ffffff;
-            --color-gray-50: #fafafa;
-            --color-gray-100: #f5f5f5;
-            --color-gray-200: #e5e5e5;
-            --color-gray-300: #d4d4d4;
-            --color-gray-400: #a3a3a3;
-            --color-gray-500: #737373;
-            --color-gray-600: #525252;
-            --color-gray-700: #404040;
-            --color-gray-800: #262626;
-            --color-gray-900: #171717;
+            --color-cream: #fdfcfa;
+            --color-gray-50: #f8f8f8;
+            --color-gray-100: #f0f0f0;
+            --color-gray-200: #e4e4e4;
+            --color-gray-300: #d1d1d1;
+            --color-gray-400: #a0a0a0;
+            --color-gray-500: #6b6b6b;
+            --color-gray-600: #4a4a4a;
+            --color-gray-700: #333333;
+            --color-gray-800: #1f1f1f;
+            --color-gray-900: #141414;
+
             --color-accent: #FFD23F;
+            --color-accent-light: #FFE47A;
             --color-accent-dark: #E5BC38;
+            --color-accent-glow: rgba(255, 210, 63, 0.4);
 
-            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
+            --space-2xs: 0.25rem;
             --space-xs: 0.5rem;
             --space-sm: 1rem;
             --space-md: 1.5rem;
@@ -43,17 +49,25 @@
             --space-2xl: 4rem;
             --space-3xl: 6rem;
             --space-4xl: 8rem;
-            --space-5xl: 12rem;
+            --space-5xl: 10rem;
+            --space-6xl: 14rem;
 
             --radius-sm: 8px;
             --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-2xl: 40px;
 
-            --transition-fast: 0.2s ease;
-            --transition-base: 0.3s ease;
-            --transition-slow: 0.5s ease;
-            --transition-slower: 0.8s ease;
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slower: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.08);
+            --shadow-xl: 0 24px 80px rgba(0, 0, 0, 0.12);
+            --shadow-glow: 0 0 60px var(--color-accent-glow);
         }
 
         html {
@@ -62,11 +76,13 @@
         }
 
         body {
-            font-family: var(--font-family);
+            font-family: var(--font-body);
             background-color: var(--color-white);
             color: var(--color-black);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         img {
@@ -81,7 +97,32 @@
         }
 
         /* ============================================
-           UTILITY CLASSES
+           CUSTOM CURSOR (Desktop only)
+        ============================================ */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--color-accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor--hover {
+            transform: scale(2);
+            background: var(--color-accent);
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .cursor { display: none; }
+        }
+
+        /* ============================================
+           LAYOUT
         ============================================ */
         .container {
             width: 100%;
@@ -98,61 +139,78 @@
             max-width: 1600px;
         }
 
+        .container--full {
+            max-width: 100%;
+            padding: 0 var(--space-xl);
+        }
+
         /* ============================================
            TYPOGRAPHY
         ============================================ */
         .heading-display {
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 800;
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+
+        .heading-1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.25rem, 6vw, 4.5rem);
+            font-weight: 600;
             line-height: 1.05;
             letter-spacing: -0.03em;
         }
 
-        .heading-1 {
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 700;
-            line-height: 1.1;
+        .heading-2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 3rem);
+            font-weight: 600;
+            line-height: 1.15;
             letter-spacing: -0.02em;
         }
 
-        .heading-2 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 600;
-            line-height: 1.2;
+        .heading-3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 500;
+            line-height: 1.25;
             letter-spacing: -0.01em;
         }
 
-        .heading-3 {
-            font-size: clamp(1.25rem, 2vw, 1.75rem);
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .text-large {
-            font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+        .text-xl {
+            font-size: clamp(1.25rem, 2vw, 1.625rem);
             line-height: 1.5;
+            font-weight: 400;
         }
 
-        .text-body {
+        .text-lg {
+            font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+            line-height: 1.6;
+        }
+
+        .text-base {
             font-size: 1rem;
             line-height: 1.7;
         }
 
-        .text-small {
+        .text-sm {
             font-size: 0.875rem;
             line-height: 1.6;
         }
 
-        .text-caption {
+        .text-xs {
             font-size: 0.75rem;
             line-height: 1.5;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 500;
         }
 
         .text-muted {
             color: var(--color-gray-500);
+        }
+
+        .text-balance {
+            text-wrap: balance;
         }
 
         /* ============================================
@@ -163,15 +221,42 @@
             align-items: center;
             justify-content: center;
             gap: var(--space-xs);
-            padding: var(--space-sm) var(--space-lg);
-            font-family: var(--font-family);
+            padding: var(--space-sm) var(--space-xl);
+            font-family: var(--font-display);
             font-size: 0.875rem;
             font-weight: 500;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             border-radius: 100px;
             cursor: pointer;
             transition: all var(--transition-base);
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .btn:hover::before {
+            opacity: 1;
+        }
+
+        .btn--primary {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            color: var(--color-black);
+            box-shadow: 0 4px 20px rgba(255, 210, 63, 0.3);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 210, 63, 0.4);
         }
 
         .btn--outline {
@@ -185,34 +270,36 @@
             color: var(--color-white);
         }
 
-        .btn--outline-white {
+        .btn--outline-light {
             background: transparent;
-            border-color: var(--color-white);
+            border-color: rgba(255, 255, 255, 0.3);
             color: var(--color-white);
         }
 
-        .btn--outline-white:hover {
+        .btn--outline-light:hover {
             background: var(--color-white);
+            border-color: var(--color-white);
             color: var(--color-black);
         }
 
-        .btn--accent {
-            background: var(--color-accent);
-            border-color: var(--color-accent);
-            color: var(--color-black);
+        .btn--ghost {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--color-white);
         }
 
-        .btn--accent:hover {
-            background: var(--color-accent-dark);
-            border-color: var(--color-accent-dark);
-            transform: translateY(-2px);
+        .btn--ghost:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .btn--icon {
-            width: 48px;
-            height: 48px;
-            padding: 0;
-            border-radius: 50%;
+        .btn__arrow {
+            transition: transform var(--transition-fast);
+        }
+
+        .btn:hover .btn__arrow {
+            transform: translateX(4px);
         }
 
         /* ============================================
@@ -221,7 +308,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(60px);
             }
             to {
                 opacity: 1;
@@ -237,7 +324,7 @@
         @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(-60px);
+                transform: translateX(-80px);
             }
             to {
                 opacity: 1;
@@ -248,7 +335,7 @@
         @keyframes slideInRight {
             from {
                 opacity: 0;
-                transform: translateX(60px);
+                transform: translateX(80px);
             }
             to {
                 opacity: 1;
@@ -259,7 +346,7 @@
         @keyframes scaleIn {
             from {
                 opacity: 0;
-                transform: scale(0.95);
+                transform: scale(0.9);
             }
             to {
                 opacity: 1;
@@ -267,41 +354,54 @@
             }
         }
 
+        @keyframes reveal {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+            to {
+                clip-path: inset(0 0% 0 0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .animate {
             opacity: 0;
         }
 
         .animate.in-view {
-            animation-duration: 0.8s;
+            animation-duration: 1s;
             animation-fill-mode: forwards;
-            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .animate--fade-up.in-view {
-            animation-name: fadeInUp;
-        }
-
-        .animate--fade.in-view {
-            animation-name: fadeIn;
-        }
-
-        .animate--slide-left.in-view {
-            animation-name: slideInLeft;
-        }
-
-        .animate--slide-right.in-view {
-            animation-name: slideInRight;
-        }
-
-        .animate--scale.in-view {
-            animation-name: scaleIn;
-        }
+        .animate--fade-up.in-view { animation-name: fadeInUp; }
+        .animate--fade.in-view { animation-name: fadeIn; }
+        .animate--slide-left.in-view { animation-name: slideInLeft; }
+        .animate--slide-right.in-view { animation-name: slideInRight; }
+        .animate--scale.in-view { animation-name: scaleIn; }
+        .animate--reveal.in-view { animation-name: reveal; }
 
         .delay-1 { animation-delay: 0.1s; }
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
         .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
 
         /* ============================================
            NAVIGATION
@@ -313,13 +413,23 @@
             right: 0;
             z-index: 1000;
             padding: var(--space-md) 0;
-            transition: all var(--transition-base);
+            transition: all var(--transition-slow);
         }
 
         .nav--scrolled {
-            background: rgba(255, 255, 255, 0.95);
+            padding: var(--space-sm) 0;
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav--scrolled .nav__logo {
+            color: var(--color-black);
+        }
+
+        .nav--scrolled .nav__link {
+            color: var(--color-gray-600);
         }
 
         .nav__inner {
@@ -329,9 +439,12 @@
         }
 
         .nav__logo {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 600;
             letter-spacing: -0.02em;
+            color: var(--color-white);
+            transition: color var(--transition-base);
         }
 
         .nav__logo span {
@@ -341,18 +454,67 @@
         .nav__links {
             display: flex;
             align-items: center;
-            gap: var(--space-lg);
+            gap: var(--space-xl);
         }
 
         .nav__link {
-            font-size: 0.875rem;
+            font-family: var(--font-display);
+            font-size: 0.8125rem;
             font-weight: 500;
-            color: var(--color-gray-600);
+            color: rgba(255, 255, 255, 0.7);
             transition: color var(--transition-fast);
+            position: relative;
+        }
+
+        .nav__link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            transition: width var(--transition-base);
         }
 
         .nav__link:hover {
+            color: var(--color-white);
+        }
+
+        .nav__link:hover::after {
+            width: 100%;
+        }
+
+        .nav--scrolled .nav__link:hover {
             color: var(--color-black);
+        }
+
+        .nav__cta {
+            padding: var(--space-xs) var(--space-md);
+        }
+
+        /* Mobile menu */
+        .nav__menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav__menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--color-white);
+            margin: 6px auto;
+            transition: all var(--transition-fast);
+        }
+
+        .nav--scrolled .nav__menu-btn span {
+            background: var(--color-black);
         }
 
         /* ============================================
@@ -378,31 +540,32 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.6;
+            opacity: 0.7;
+            transform: scale(1.1);
+            transition: transform 10s ease-out;
         }
 
-        .hero__bg-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--color-gray-900) 0%, var(--color-black) 50%, var(--color-gray-800) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .hero.loaded .hero__bg-image {
+            transform: scale(1);
         }
 
-        .hero__bg-placeholder::after {
-            content: '';
+        .hero__bg-overlay {
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD23F' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.2) 40%,
+                rgba(0, 0, 0, 0.6) 100%
+            );
         }
 
-        .hero__overlay {
+        .hero__grain {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
-            z-index: 2;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
         }
 
         .hero__content {
@@ -410,31 +573,62 @@
             z-index: 3;
             text-align: center;
             color: var(--color-white);
-            max-width: 900px;
+            max-width: 1000px;
             padding: var(--space-lg);
         }
 
-        .hero__tag {
-            display: inline-block;
-            padding: var(--space-xs) var(--space-sm);
-            background: var(--color-accent);
-            color: var(--color-black);
+        .hero__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(255, 210, 63, 0.15);
+            border: 1px solid rgba(255, 210, 63, 0.3);
+            backdrop-filter: blur(10px);
+            color: var(--color-accent);
+            font-family: var(--font-display);
             font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            font-weight: 500;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             border-radius: 100px;
-            margin-bottom: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero__badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .hero__title {
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space-lg);
+            text-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero__title-line {
+            display: block;
+        }
+
+        .hero__title-accent {
+            color: var(--color-accent);
+            position: relative;
         }
 
         .hero__subtitle {
-            color: var(--color-gray-300);
+            color: rgba(255, 255, 255, 0.7);
             max-width: 600px;
-            margin: 0 auto var(--space-xl);
+            margin: 0 auto var(--space-2xl);
+        }
+
+        .hero__cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
         }
 
         .hero__scroll {
@@ -447,46 +641,30 @@
             flex-direction: column;
             align-items: center;
             gap: var(--space-sm);
-            color: var(--color-gray-400);
-            animation: bounce 2s ease-in-out infinite;
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
+        .hero__scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--color-accent), transparent);
+            animation: float 2s ease-in-out infinite;
         }
 
-        .hero__scroll-icon {
-            width: 24px;
-            height: 40px;
-            border: 2px solid currentColor;
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .hero__scroll-icon::after {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 8px;
-            background: currentColor;
-            border-radius: 2px;
-            animation: scrollDot 1.5s ease-in-out infinite;
-        }
-
-        @keyframes scrollDot {
-            0%, 100% { opacity: 1; top: 8px; }
-            50% { opacity: 0.3; top: 16px; }
+        .hero__scroll-text {
+            font-family: var(--font-display);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
         }
 
         /* ============================================
-           SECTION BASE
+           SECTION BASE STYLES
         ============================================ */
         .section {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
+            position: relative;
         }
 
         .section--dark {
@@ -494,65 +672,101 @@
             color: var(--color-white);
         }
 
+        .section--cream {
+            background: var(--color-cream);
+        }
+
         .section--gray {
             background: var(--color-gray-50);
         }
 
-        .section__header {
-            margin-bottom: var(--space-3xl);
+        .section__label {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-family: var(--font-display);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: var(--space-md);
         }
 
-        .section__tag {
-            display: inline-block;
-            color: var(--color-accent);
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: var(--space-sm);
+        .section__label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--color-accent);
+        }
+
+        .section__number {
+            font-family: var(--font-display);
+            font-size: 0.625rem;
+            font-weight: 500;
+            color: var(--color-gray-400);
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-xs);
         }
 
         /* ============================================
            CONTEXT SECTION
         ============================================ */
         .context {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
+            overflow: hidden;
         }
 
         .context__grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-3xl);
+            grid-template-columns: 1fr 1.2fr;
+            gap: var(--space-4xl);
             align-items: center;
+        }
+
+        .context__content {
+            max-width: 480px;
+        }
+
+        .context__title {
+            margin-bottom: var(--space-md);
         }
 
         .context__text {
-            max-width: 500px;
+            color: var(--color-gray-500);
+        }
+
+        .context__image-wrapper {
+            position: relative;
         }
 
         .context__image {
-            position: relative;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius-2xl);
             overflow: hidden;
             aspect-ratio: 4/3;
+            position: relative;
         }
 
-        .context__image-placeholder {
+        .context__image img {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--color-gray-200) 0%, var(--color-gray-100) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-sm);
-            color: var(--color-gray-400);
+            object-fit: cover;
+            transition: transform var(--transition-slower);
         }
 
-        .context__image-placeholder svg {
-            width: 64px;
-            height: 64px;
-            opacity: 0.5;
+        .context__image:hover img {
+            transform: scale(1.05);
+        }
+
+        .context__image-accent {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            background: var(--color-accent);
+            border-radius: var(--radius-lg);
+            z-index: -1;
         }
 
         /* ============================================
@@ -561,25 +775,33 @@
         .challenge {
             background: var(--color-black);
             color: var(--color-white);
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
             position: relative;
             overflow: hidden;
         }
 
-        .challenge::before {
-            content: '';
+        .challenge__bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0.4;
+        }
+
+        .challenge__bg-gradient {
             position: absolute;
             top: -50%;
-            right: -20%;
-            width: 80%;
+            left: -50%;
+            width: 200%;
             height: 200%;
-            background: radial-gradient(ellipse at center, var(--color-accent) 0%, transparent 70%);
-            opacity: 0.05;
-            pointer-events: none;
+            background: radial-gradient(circle at 30% 50%, var(--color-accent) 0%, transparent 40%);
+            opacity: 0.08;
+            animation: gradient 15s ease infinite;
+            background-size: 200% 200%;
         }
 
         .challenge__content {
-            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
             margin: 0 auto;
             text-align: center;
         }
@@ -588,20 +810,24 @@
             margin-bottom: var(--space-lg);
         }
 
-        .challenge__title span {
+        .challenge__highlight {
             color: var(--color-accent);
+            position: relative;
         }
 
         .challenge__text {
-            color: var(--color-gray-300);
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         /* ============================================
            INSIGHT SECTION
         ============================================ */
         .insight {
-            padding: var(--space-5xl) 0;
-            background: var(--color-gray-50);
+            padding: var(--space-6xl) 0;
+            background: var(--color-cream);
+            position: relative;
         }
 
         .insight__content {
@@ -610,33 +836,51 @@
             text-align: center;
         }
 
-        .insight__quote {
+        .insight__quote-wrapper {
             position: relative;
-            padding: var(--space-3xl);
+            padding: var(--space-4xl) var(--space-xl);
         }
 
-        .insight__quote::before {
-            content: '"';
+        .insight__quote-mark {
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 12rem;
-            font-weight: 800;
+            font-family: var(--font-display);
+            font-size: 16rem;
+            font-weight: 700;
             color: var(--color-accent);
-            opacity: 0.2;
-            line-height: 1;
+            opacity: 0.15;
+            line-height: 0.8;
             pointer-events: none;
+            user-select: none;
         }
 
-        .insight__text {
+        .insight__quote {
             position: relative;
             z-index: 1;
             font-style: italic;
+            color: var(--color-gray-700);
         }
 
-        .insight__attribution {
-            margin-top: var(--space-lg);
+        .insight__source {
+            margin-top: var(--space-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+
+        .insight__source-line {
+            width: 40px;
+            height: 1px;
+            background: var(--color-gray-300);
+        }
+
+        .insight__source-text {
+            font-family: var(--font-display);
+            font-size: 0.8125rem;
+            font-weight: 500;
             color: var(--color-gray-500);
         }
 
@@ -644,66 +888,56 @@
            TENSION SECTION
         ============================================ */
         .tension {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
+            overflow: hidden;
         }
 
         .tension__grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-3xl);
+            grid-template-columns: 1.2fr 1fr;
+            gap: var(--space-4xl);
             align-items: center;
-        }
-
-        .tension__content {
-            max-width: 500px;
-        }
-
-        .tension__title {
-            margin-bottom: var(--space-md);
-        }
-
-        .tension__text {
-            color: var(--color-gray-600);
         }
 
         .tension__visual {
             position: relative;
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            aspect-ratio: 1;
-            background: var(--color-gray-100);
         }
 
-        .tension__visual-inner {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .tension__card {
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
             padding: var(--space-xl);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
         }
 
         .tension__diagram {
             display: flex;
             flex-direction: column;
             gap: var(--space-lg);
-            width: 100%;
         }
 
         .tension__item {
             display: flex;
             align-items: center;
             gap: var(--space-md);
-            padding: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--color-gray-50);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-base);
+        }
+
+        .tension__item:hover {
             background: var(--color-white);
-            border-radius: var(--radius-md);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-md);
+            transform: translateX(8px);
         }
 
         .tension__item-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-sm);
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -711,119 +945,184 @@
         }
 
         .tension__item-icon--category {
-            background: var(--color-gray-200);
+            background: linear-gradient(135deg, var(--color-gray-200), var(--color-gray-100));
         }
 
         .tension__item-icon--audience {
-            background: var(--color-accent);
+            background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+        }
+
+        .tension__item-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .tension__item-content h4 {
+            font-family: var(--font-display);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: var(--space-2xs);
+        }
+
+        .tension__item-content p {
+            font-size: 0.8125rem;
+            color: var(--color-gray-500);
         }
 
         .tension__vs {
             text-align: center;
+            font-family: var(--font-display);
             font-weight: 700;
-            color: var(--color-gray-400);
-            font-size: 1.5rem;
+            font-size: 1.25rem;
+            color: var(--color-gray-300);
+            padding: var(--space-xs) 0;
+        }
+
+        .tension__content {
+            max-width: 480px;
+        }
+
+        .tension__title {
+            margin-bottom: var(--space-md);
+        }
+
+        .tension__text {
+            color: var(--color-gray-500);
         }
 
         /* ============================================
            BIG IDEA SECTION
         ============================================ */
         .big-idea {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
             background: var(--color-black);
             color: var(--color-white);
             text-align: center;
             position: relative;
             overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
         }
 
-        .big-idea::before {
-            content: '';
+        .big-idea__bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 50%, var(--color-accent) 0%, transparent 60%);
-            opacity: 0.08;
-            pointer-events: none;
+        }
+
+        .big-idea__bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--color-accent) 0%, transparent 60%);
+            opacity: 0.1;
+            filter: blur(80px);
         }
 
         .big-idea__content {
             position: relative;
             z-index: 1;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .big-idea__title {
             margin-bottom: var(--space-xl);
-            background: linear-gradient(135deg, var(--color-white) 0%, var(--color-accent) 100%);
+            background: linear-gradient(135deg, var(--color-white) 0%, var(--color-accent) 50%, var(--color-white) 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: gradient 5s ease infinite;
         }
 
         .big-idea__text {
-            color: var(--color-gray-300);
+            color: rgba(255, 255, 255, 0.6);
             max-width: 700px;
             margin: 0 auto;
         }
 
         /* ============================================
-           MOODBOARD / VISUAL TERRITORY
+           MOODBOARD SECTION
         ============================================ */
         .moodboard {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
             background: var(--color-gray-50);
         }
 
         .moodboard__header {
             text-align: center;
-            margin-bottom: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
+        }
+
+        .moodboard__title {
+            margin-bottom: var(--space-sm);
         }
 
         .moodboard__grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(2, 280px);
             gap: var(--space-md);
         }
 
         .moodboard__item {
             position: relative;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             overflow: hidden;
-            aspect-ratio: 1;
-            background: var(--color-gray-200);
-            transition: transform var(--transition-base);
+            cursor: pointer;
         }
 
-        .moodboard__item:hover {
-            transform: scale(1.02);
-        }
+        .moodboard__item:nth-child(1) { grid-column: span 5; }
+        .moodboard__item:nth-child(2) { grid-column: span 4; }
+        .moodboard__item:nth-child(3) { grid-column: span 3; }
+        .moodboard__item:nth-child(4) { grid-column: span 3; }
+        .moodboard__item:nth-child(5) { grid-column: span 5; }
+        .moodboard__item:nth-child(6) { grid-column: span 4; }
 
-        .moodboard__item:nth-child(1) {
-            grid-column: span 2;
-            aspect-ratio: 2/1;
-        }
-
-        .moodboard__item:nth-child(5) {
-            grid-column: span 2;
-            aspect-ratio: 2/1;
-        }
-
-        .moodboard__placeholder {
+        .moodboard__item img {
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-xs);
-            color: var(--color-gray-400);
-            background: linear-gradient(135deg, var(--color-gray-200) 0%, var(--color-gray-100) 100%);
+            object-fit: cover;
+            transition: transform var(--transition-slower);
         }
 
-        .moodboard__placeholder span {
-            font-size: 0.75rem;
+        .moodboard__item:hover img {
+            transform: scale(1.1);
+        }
+
+        .moodboard__item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .moodboard__item:hover .moodboard__item-overlay {
+            opacity: 1;
+        }
+
+        .moodboard__item-label {
+            position: absolute;
+            bottom: var(--space-md);
+            left: var(--space-md);
+            color: var(--color-white);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
             font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all var(--transition-base);
+        }
+
+        .moodboard__item:hover .moodboard__item-label {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .moodboard__description {
@@ -836,228 +1135,270 @@
            KEY VISUAL SECTION
         ============================================ */
         .key-visual {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
         }
 
         .key-visual__header {
             text-align: center;
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-3xl);
         }
 
         .key-visual__image {
             position: relative;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius-2xl);
             overflow: hidden;
             aspect-ratio: 21/9;
-            background: var(--color-gray-100);
+            box-shadow: var(--shadow-xl);
         }
 
-        .key-visual__placeholder {
+        .key-visual__image img {
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-md);
-            background: linear-gradient(135deg, var(--color-gray-900) 0%, var(--color-black) 50%, var(--color-gray-800) 100%);
-            color: var(--color-white);
+            object-fit: cover;
         }
 
-        .key-visual__placeholder-icon {
-            width: 80px;
-            height: 80px;
-            border: 3px solid var(--color-accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .key-visual__image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, transparent 50%);
         }
 
-        .key-visual__placeholder-text {
-            text-align: center;
-        }
-
-        .key-visual__caption {
-            text-align: center;
-            margin-top: var(--space-md);
-            color: var(--color-gray-500);
-        }
-
-        .key-visual__caption span {
+        .key-visual__badge {
+            position: absolute;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
             display: inline-flex;
             align-items: center;
             gap: var(--space-xs);
-            padding: var(--space-xs) var(--space-sm);
-            background: var(--color-gray-100);
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
             border-radius: 100px;
+            color: var(--color-white);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .key-visual__badge svg {
+            width: 14px;
+            height: 14px;
+            color: var(--color-accent);
         }
 
         /* ============================================
            SOCIAL MEDIA SECTION
         ============================================ */
         .social {
-            padding: var(--space-5xl) 0;
-            background: var(--color-gray-50);
+            padding: var(--space-6xl) 0;
+            background: var(--color-cream);
         }
 
         .social__header {
             text-align: center;
-            margin-bottom: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
         }
 
         .social__grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-md);
+            gap: var(--space-lg);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .social__item {
             position: relative;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             overflow: hidden;
             aspect-ratio: 9/16;
-            background: var(--color-gray-200);
-            transition: transform var(--transition-base);
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-base);
         }
 
         .social__item:hover {
-            transform: translateY(-8px);
+            transform: translateY(-12px) rotate(-1deg);
+            box-shadow: var(--shadow-xl);
         }
 
-        .social__placeholder {
+        .social__item img {
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-sm);
-            padding: var(--space-md);
-            background: linear-gradient(180deg, var(--color-gray-800) 0%, var(--color-black) 100%);
+            object-fit: cover;
+        }
+
+        .social__item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        .social__item-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-lg);
             color: var(--color-white);
-            text-align: center;
         }
 
-        .social__placeholder-icon {
-            width: 48px;
-            height: 48px;
-            border: 2px solid var(--color-accent);
-            border-radius: var(--radius-sm);
-            display: flex;
+        .social__item-platform {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: var(--space-sm);
-        }
-
-        .social__placeholder-label {
-            font-size: 0.75rem;
+            gap: var(--space-2xs);
+            padding: var(--space-2xs) var(--space-xs);
+            background: var(--color-accent);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-display);
+            font-size: 0.625rem;
             font-weight: 600;
-            color: var(--color-accent);
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            color: var(--color-black);
+            margin-bottom: var(--space-xs);
         }
 
-        .social__placeholder-title {
+        .social__item-title {
+            font-family: var(--font-display);
+            font-size: 0.9375rem;
             font-weight: 600;
-            font-size: 0.875rem;
+            line-height: 1.3;
         }
 
         /* ============================================
            AI ROLE SECTION
         ============================================ */
         .ai-role {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
         }
 
         .ai-role__header {
             text-align: center;
-            margin-bottom: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
         }
 
         .ai-role__grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: var(--space-lg);
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        .ai-role__item {
+        .ai-role__card {
             text-align: center;
-            padding: var(--space-xl);
-            background: var(--color-gray-50);
-            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-gray-100);
             transition: all var(--transition-base);
         }
 
-        .ai-role__item:hover {
-            background: var(--color-white);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-            transform: translateY(-4px);
+        .ai-role__card:hover {
+            border-color: var(--color-accent);
+            box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-accent);
+            transform: translateY(-8px);
         }
 
         .ai-role__icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto var(--space-md);
-            background: var(--color-accent);
-            border-radius: var(--radius-md);
+            width: 72px;
+            height: 72px;
+            margin: 0 auto var(--space-lg);
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 8px 24px rgba(255, 210, 63, 0.3);
         }
 
         .ai-role__icon svg {
             width: 32px;
             height: 32px;
+            color: var(--color-black);
         }
 
-        .ai-role__title {
+        .ai-role__card-title {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: var(--space-xs);
         }
 
-        .ai-role__text {
+        .ai-role__card-text {
             color: var(--color-gray-500);
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
+        }
+
+        .ai-role__footer {
+            text-align: center;
+            margin-top: var(--space-3xl);
+            padding: var(--space-xl);
+            background: var(--color-gray-50);
+            border-radius: var(--radius-xl);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ai-role__footer-text {
+            color: var(--color-gray-600);
         }
 
         /* ============================================
            RESULTS SECTION
         ============================================ */
         .results {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
             background: var(--color-gray-50);
         }
 
         .results__header {
             text-align: center;
-            margin-bottom: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
         }
 
         .results__grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-lg);
+            gap: var(--space-xl);
             max-width: 1000px;
             margin: 0 auto;
         }
 
-        .results__item {
+        .results__card {
             text-align: center;
-            padding: var(--space-xl);
+            padding: var(--space-2xl);
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+        }
+
+        .results__card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
         }
 
         .results__icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto var(--space-md);
+            width: 88px;
+            height: 88px;
+            margin: 0 auto var(--space-lg);
             border: 3px solid var(--color-accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        .results__icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 1px dashed var(--color-gray-200);
+            border-radius: 50%;
         }
 
         .results__icon svg {
@@ -1066,12 +1407,14 @@
             color: var(--color-accent);
         }
 
-        .results__label {
+        .results__card-title {
+            font-family: var(--font-display);
+            font-size: 1.0625rem;
             font-weight: 600;
             margin-bottom: var(--space-xs);
         }
 
-        .results__text {
+        .results__card-text {
             color: var(--color-gray-500);
             font-size: 0.875rem;
         }
@@ -1080,11 +1423,11 @@
            CLOSING SECTION
         ============================================ */
         .closing {
-            padding: var(--space-5xl) 0;
+            padding: var(--space-6xl) 0;
             background: var(--color-black);
             color: var(--color-white);
             text-align: center;
-            min-height: 80vh;
+            min-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1092,13 +1435,34 @@
             overflow: hidden;
         }
 
-        .closing::before {
-            content: '';
+        .closing__bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 100%, var(--color-accent) 0%, transparent 50%);
-            opacity: 0.1;
-            pointer-events: none;
+        }
+
+        .closing__bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+        }
+
+        .closing__bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, var(--color-black) 0%, rgba(0, 0, 0, 0.7) 50%, var(--color-black) 100%);
+        }
+
+        .closing__bg-glow {
+            position: absolute;
+            bottom: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, var(--color-accent) 0%, transparent 60%);
+            opacity: 0.15;
+            filter: blur(60px);
         }
 
         .closing__content {
@@ -1107,11 +1471,19 @@
         }
 
         .closing__title {
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-2xl);
         }
 
-        .closing__title span {
+        .closing__highlight {
             color: var(--color-accent);
+        }
+
+        .closing__cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
         }
 
         /* ============================================
@@ -1131,7 +1503,8 @@
         }
 
         .footer__logo {
-            font-weight: 700;
+            font-family: var(--font-display);
+            font-weight: 600;
             color: var(--color-white);
         }
 
@@ -1140,22 +1513,34 @@
         }
 
         .footer__text {
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
         }
 
         /* ============================================
            RESPONSIVE DESIGN
         ============================================ */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
             .moodboard__grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 240px);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            :root {
+                --space-6xl: 8rem;
             }
 
-            .moodboard__item:nth-child(1),
-            .moodboard__item:nth-child(5) {
-                grid-column: span 1;
-                aspect-ratio: 1;
+            .moodboard__grid {
+                grid-template-columns: repeat(6, 1fr);
+                grid-template-rows: repeat(3, 200px);
             }
+
+            .moodboard__item:nth-child(1) { grid-column: span 4; }
+            .moodboard__item:nth-child(2) { grid-column: span 2; }
+            .moodboard__item:nth-child(3) { grid-column: span 2; }
+            .moodboard__item:nth-child(4) { grid-column: span 2; }
+            .moodboard__item:nth-child(5) { grid-column: span 2; }
+            .moodboard__item:nth-child(6) { grid-column: span 3; grid-row: span 1; }
 
             .social__grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1169,20 +1554,24 @@
 
         @media (max-width: 768px) {
             :root {
-                --space-5xl: 6rem;
+                --space-6xl: 5rem;
             }
 
             .nav__links {
                 display: none;
             }
 
+            .nav__menu-btn {
+                display: block;
+            }
+
             .context__grid,
             .tension__grid {
                 grid-template-columns: 1fr;
-                gap: var(--space-xl);
+                gap: var(--space-2xl);
             }
 
-            .context__image {
+            .context__image-wrapper {
                 order: -1;
             }
 
@@ -1191,16 +1580,20 @@
             }
 
             .moodboard__grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: repeat(3, 180px);
             }
 
-            .moodboard__item:nth-child(1),
-            .moodboard__item:nth-child(5) {
-                aspect-ratio: 16/9;
-            }
+            .moodboard__item:nth-child(1) { grid-column: span 2; }
+            .moodboard__item:nth-child(2) { grid-column: span 1; }
+            .moodboard__item:nth-child(3) { grid-column: span 1; }
+            .moodboard__item:nth-child(4) { grid-column: span 1; }
+            .moodboard__item:nth-child(5) { grid-column: span 1; }
+            .moodboard__item:nth-child(6) { grid-column: span 2; }
 
             .social__grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-md);
             }
 
             .ai-role__grid,
@@ -1217,6 +1610,14 @@
                 gap: var(--space-sm);
                 text-align: center;
             }
+
+            .hero__cta {
+                flex-direction: column;
+            }
+
+            .closing__cta {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1224,12 +1625,26 @@
                 padding: 0 var(--space-md);
             }
 
-            .hero__tag {
+            .hero__badge {
                 font-size: 0.625rem;
+                padding: var(--space-2xs) var(--space-sm);
+            }
+
+            .moodboard__grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 200px);
+            }
+
+            .moodboard__item:nth-child(1),
+            .moodboard__item:nth-child(2),
+            .moodboard__item:nth-child(3),
+            .moodboard__item:nth-child(4),
+            .moodboard__item:nth-child(5),
+            .moodboard__item:nth-child(6) {
+                grid-column: span 1;
             }
 
             .social__grid {
-                grid-template-columns: 1fr 1fr;
                 gap: var(--space-sm);
             }
 
@@ -1240,18 +1655,26 @@
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="container">
             <div class="nav__inner">
-                <a href="#" class="nav__logo">Creative<span>.</span>Portfolio</a>
+                <a href="#" class="nav__logo">Portfolio<span>.</span></a>
                 <div class="nav__links">
                     <a href="#contexto" class="nav__link">Contexto</a>
                     <a href="#insight" class="nav__link">Insight</a>
                     <a href="#idea" class="nav__link">Idea</a>
                     <a href="#visual" class="nav__link">Visual</a>
-                    <a href="#" class="btn btn--outline">Contacto</a>
+                    <a href="#" class="btn btn--ghost nav__cta">Contacto</a>
                 </div>
+                <button class="nav__menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
@@ -1259,24 +1682,40 @@
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero__bg">
-            <div class="hero__bg-placeholder">
-                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="color: var(--color-accent); opacity: 0.3;">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21,15 16,10 5,21"></polyline>
-                </svg>
+            <img
+                src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=1920&q=80"
+                alt="MINI Cooper en ciudad"
+                class="hero__bg-image"
+                loading="eager"
+            >
+            <div class="hero__bg-overlay"></div>
+            <div class="hero__grain"></div>
+        </div>
+        <div class="hero__content">
+            <span class="hero__badge animate animate--fade-up">
+                <span class="hero__badge-dot"></span>
+                Creative & AI Strategist
+            </span>
+            <h1 class="heading-display hero__title animate animate--fade-up delay-1">
+                <span class="hero__title-line">MINI Cooper</span>
+                <span class="hero__title-line hero__title-accent">Pruébate la actitud</span>
+            </h1>
+            <p class="text-xl hero__subtitle animate animate--fade-up delay-2">
+                Caso basado en insight para impulsar test drives en compradores de su primer carro premium.
+            </p>
+            <div class="hero__cta animate animate--fade-up delay-3">
+                <a href="#contexto" class="btn btn--primary">
+                    Ver el caso completo
+                    <svg class="btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#idea" class="btn btn--outline-light">La Gran Idea</a>
             </div>
         </div>
-        <div class="hero__overlay"></div>
-        <div class="hero__content">
-            <span class="hero__tag animate animate--fade-up">Creative & AI Strategist</span>
-            <h1 class="heading-display hero__title animate animate--fade-up delay-1">MINI Cooper — Pruébate la actitud</h1>
-            <p class="text-large hero__subtitle animate animate--fade-up delay-2">Caso basado en insight para impulsar test drives en compradores de su primer carro premium.</p>
-            <a href="#contexto" class="btn btn--accent animate animate--fade-up delay-3">Ver el caso completo</a>
-        </div>
         <div class="hero__scroll">
-            <div class="hero__scroll-icon"></div>
-            <span class="text-caption">Scroll</span>
+            <div class="hero__scroll-line"></div>
+            <span class="hero__scroll-text">Scroll</span>
         </div>
     </section>
 
@@ -1284,20 +1723,25 @@
     <section class="context section" id="contexto">
         <div class="container">
             <div class="context__grid">
-                <div class="context__text">
-                    <span class="section__tag animate animate--fade-up">Contexto</span>
-                    <h2 class="heading-2 animate animate--fade-up delay-1">La categoría premium habla de lujo. La audiencia habla de identidad.</h2>
-                    <p class="text-large text-muted animate animate--fade-up delay-2" style="margin-top: var(--space-md);">MINI necesitaba transformar admiración en acción.</p>
+                <div class="context__content">
+                    <span class="section__number animate animate--fade-up">01</span>
+                    <span class="section__label animate animate--fade-up delay-1">Contexto</span>
+                    <h2 class="heading-2 context__title animate animate--fade-up delay-2">
+                        La categoría premium habla de lujo. La audiencia habla de identidad.
+                    </h2>
+                    <p class="text-lg context__text animate animate--fade-up delay-3">
+                        MINI necesitaba transformar admiración en acción. Convertir a los que sueñan con el volante en quienes lo toman.
+                    </p>
                 </div>
-                <div class="context__image animate animate--scale delay-2">
-                    <div class="context__image-placeholder">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span class="text-small">Imagen lifestyle MINI</span>
+                <div class="context__image-wrapper animate animate--scale delay-2">
+                    <div class="context__image">
+                        <img
+                            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
+                            alt="MINI Cooper lifestyle"
+                            loading="lazy"
+                        >
                     </div>
+                    <div class="context__image-accent"></div>
                 </div>
             </div>
         </div>
@@ -1305,24 +1749,40 @@
 
     <!-- Challenge Section -->
     <section class="challenge section--dark" id="desafio">
+        <div class="challenge__bg">
+            <div class="challenge__bg-gradient"></div>
+        </div>
         <div class="container">
             <div class="challenge__content">
-                <span class="section__tag animate animate--fade-up">El Desafío</span>
-                <h2 class="heading-1 challenge__title animate animate--fade-up delay-1">Hacer que los jóvenes pasen del <span>scroll</span> al <span>volante</span>.</h2>
-                <p class="text-large challenge__text animate animate--fade-up delay-2">Convertir interés en test drives reales.</p>
+                <span class="section__number animate animate--fade-up">02</span>
+                <span class="section__label animate animate--fade-up delay-1">El Desafío</span>
+                <h2 class="heading-1 challenge__title animate animate--fade-up delay-2">
+                    Hacer que los jóvenes pasen del <span class="challenge__highlight">scroll</span> al <span class="challenge__highlight">volante</span>.
+                </h2>
+                <p class="text-xl challenge__text animate animate--fade-up delay-3">
+                    Convertir interés digital en test drives reales.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Insight Section -->
-    <section class="insight section" id="insight">
+    <section class="insight section--cream" id="insight">
         <div class="container">
             <div class="insight__content">
-                <span class="section__tag animate animate--fade-up">El Insight</span>
-                <div class="insight__quote animate animate--scale delay-1">
-                    <p class="heading-2 insight__text">"No sé si estoy listo para un carro premium… pero sí quiero sentir cómo se siente manejarlo."</p>
+                <span class="section__number animate animate--fade-up">03</span>
+                <span class="section__label animate animate--fade-up delay-1">El Insight</span>
+                <div class="insight__quote-wrapper animate animate--scale delay-2">
+                    <span class="insight__quote-mark">"</span>
+                    <p class="heading-2 insight__quote">
+                        No sé si estoy listo para un carro premium… pero sí quiero sentir cómo se siente manejarlo.
+                    </p>
                 </div>
-                <p class="text-body insight__attribution animate animate--fade-up delay-2">— Audiencia target: Jóvenes profesionales, primer carro premium</p>
+                <div class="insight__source animate animate--fade-up delay-3">
+                    <span class="insight__source-line"></span>
+                    <span class="insight__source-text">Audiencia target: Jóvenes profesionales, primer carro premium</span>
+                    <span class="insight__source-line"></span>
+                </div>
             </div>
         </div>
     </section>
@@ -1331,40 +1791,45 @@
     <section class="tension section" id="tension">
         <div class="container">
             <div class="tension__grid">
-                <div class="tension__content">
-                    <span class="section__tag animate animate--fade-up">La Tensión</span>
-                    <h2 class="heading-2 tension__title animate animate--fade-up delay-1">La categoría promete estatus. La audiencia busca autenticidad.</h2>
-                    <p class="text-large tension__text animate animate--fade-up delay-2">Temen que un carro premium no sea "para ellos".</p>
-                </div>
-                <div class="tension__visual animate animate--slide-right delay-2">
-                    <div class="tension__visual-inner">
+                <div class="tension__visual animate animate--slide-left delay-1">
+                    <div class="tension__card">
                         <div class="tension__diagram">
                             <div class="tension__item">
                                 <div class="tension__item-icon tension__item-icon--category">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"></path>
+                                        <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/>
                                     </svg>
                                 </div>
-                                <div>
-                                    <p class="text-small" style="font-weight: 600;">Categoría Premium</p>
-                                    <p class="text-small text-muted">Estatus · Lujo · Aspiracional</p>
+                                <div class="tension__item-content">
+                                    <h4>Categoría Premium</h4>
+                                    <p>Estatus · Lujo · Aspiracional</p>
                                 </div>
                             </div>
                             <div class="tension__vs">VS</div>
                             <div class="tension__item">
                                 <div class="tension__item-icon tension__item-icon--audience">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
                                     </svg>
                                 </div>
-                                <div>
-                                    <p class="text-small" style="font-weight: 600;">Audiencia Joven</p>
-                                    <p class="text-small text-muted">Autenticidad · Identidad · Experiencia</p>
+                                <div class="tension__item-content">
+                                    <h4>Audiencia Joven</h4>
+                                    <p>Autenticidad · Identidad · Experiencia</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="tension__content">
+                    <span class="section__number animate animate--fade-up">04</span>
+                    <span class="section__label animate animate--fade-up delay-1">La Tensión</span>
+                    <h2 class="heading-2 tension__title animate animate--fade-up delay-2">
+                        La categoría promete estatus. La audiencia busca autenticidad.
+                    </h2>
+                    <p class="text-lg tension__text animate animate--fade-up delay-3">
+                        Temen que un carro premium no sea "para ellos". Sienten que el lujo es distante, ajeno a su identidad.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1372,85 +1837,66 @@
 
     <!-- Big Idea Section -->
     <section class="big-idea section--dark" id="idea">
+        <div class="big-idea__bg">
+            <div class="big-idea__bg-glow"></div>
+        </div>
         <div class="container">
             <div class="big-idea__content">
-                <span class="section__tag animate animate--fade-up">La Gran Idea</span>
-                <h2 class="heading-display big-idea__title animate animate--scale delay-1">Pruébate la actitud.</h2>
-                <p class="text-large big-idea__text animate animate--fade-up delay-2">El test drive se convierte en una prueba de identidad. MINI no te pide decidir, te invita a sentir quién eres cuando lo manejas.</p>
+                <span class="section__number animate animate--fade-up">05</span>
+                <span class="section__label animate animate--fade-up delay-1">La Gran Idea</span>
+                <h2 class="heading-display big-idea__title animate animate--scale delay-2">
+                    Pruébate la actitud.
+                </h2>
+                <p class="text-xl big-idea__text animate animate--fade-up delay-3">
+                    El test drive se convierte en una prueba de identidad. MINI no te pide decidir, te invita a sentir quién eres cuando lo manejas.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Moodboard Section -->
-    <section class="moodboard section" id="visual">
+    <section class="moodboard section--gray" id="visual">
         <div class="container container--wide">
             <div class="moodboard__header">
-                <span class="section__tag animate animate--fade-up">Territorio Visual</span>
-                <h2 class="heading-2 animate animate--fade-up delay-1">Moodboard de Campaña</h2>
+                <span class="section__number animate animate--fade-up">06</span>
+                <span class="section__label animate animate--fade-up delay-1">Territorio Visual</span>
+                <h2 class="heading-2 moodboard__title animate animate--fade-up delay-2">Moodboard de Campaña</h2>
             </div>
             <div class="moodboard__grid">
                 <div class="moodboard__item animate animate--scale delay-1">
-                    <div class="moodboard__placeholder">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span>Urban lifestyle</span>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80" alt="Urban lifestyle" loading="lazy">
+                    <div class="moodboard__item-overlay"></div>
+                    <span class="moodboard__item-label">Urban Lifestyle</span>
                 </div>
                 <div class="moodboard__item animate animate--scale delay-2">
-                    <div class="moodboard__placeholder">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span>Street style</span>
-                    </div>
-                </div>
-                <div class="moodboard__item animate animate--scale delay-1">
-                    <div class="moodboard__placeholder">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span>Youth culture</span>
-                    </div>
-                </div>
-                <div class="moodboard__item animate animate--scale delay-2">
-                    <div class="moodboard__placeholder">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span>Premium details</span>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80" alt="Street style" loading="lazy">
+                    <div class="moodboard__item-overlay"></div>
+                    <span class="moodboard__item-label">Street Style</span>
                 </div>
                 <div class="moodboard__item animate animate--scale delay-3">
-                    <div class="moodboard__placeholder">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span>City vibes</span>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Youth culture" loading="lazy">
+                    <div class="moodboard__item-overlay"></div>
+                    <span class="moodboard__item-label">Youth Culture</span>
                 </div>
                 <div class="moodboard__item animate animate--scale delay-4">
-                    <div class="moodboard__placeholder">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
-                        </svg>
-                        <span>Driving experience</span>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80" alt="City vibes" loading="lazy">
+                    <div class="moodboard__item-overlay"></div>
+                    <span class="moodboard__item-label">City Vibes</span>
+                </div>
+                <div class="moodboard__item animate animate--scale delay-5">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="Premium details" loading="lazy">
+                    <div class="moodboard__item-overlay"></div>
+                    <span class="moodboard__item-label">Premium Details</span>
+                </div>
+                <div class="moodboard__item animate animate--scale delay-6">
+                    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80" alt="Driving experience" loading="lazy">
+                    <div class="moodboard__item-overlay"></div>
+                    <span class="moodboard__item-label">Driving Experience</span>
                 </div>
             </div>
-            <p class="moodboard__description text-body animate animate--fade-up delay-4">Estética urbana premium, real, joven y social-first.</p>
+            <p class="text-base moodboard__description animate animate--fade-up delay-4">
+                Estética urbana premium, real, joven y social-first.
+            </p>
         </div>
     </section>
 
@@ -1458,90 +1904,66 @@
     <section class="key-visual section" id="keyvisual">
         <div class="container container--wide">
             <div class="key-visual__header">
-                <span class="section__tag animate animate--fade-up">Key Visual</span>
-                <h2 class="heading-2 animate animate--fade-up delay-1">Visual Principal de Campaña</h2>
+                <span class="section__number animate animate--fade-up">07</span>
+                <span class="section__label animate animate--fade-up delay-1">Key Visual</span>
+                <h2 class="heading-2 animate animate--fade-up delay-2">Visual Principal de Campaña</h2>
             </div>
-            <div class="key-visual__image animate animate--scale delay-2">
-                <div class="key-visual__placeholder">
-                    <div class="key-visual__placeholder-icon">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--color-accent);">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                        </svg>
-                    </div>
-                    <div class="key-visual__placeholder-text">
-                        <p class="heading-3">Key Visual</p>
-                        <p class="text-small text-muted" style="color: var(--color-gray-400);">Imagen principal de campaña</p>
-                    </div>
-                </div>
-            </div>
-            <div class="key-visual__caption animate animate--fade-up delay-3">
-                <span class="text-small">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-accent);">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            <div class="key-visual__image animate animate--scale delay-3">
+                <img
+                    src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1600&q=80"
+                    alt="Key Visual - MINI Cooper Campaign"
+                    loading="lazy"
+                >
+                <div class="key-visual__image-overlay"></div>
+                <span class="key-visual__badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                     </svg>
-                    Key Visual generado con IA
+                    Generado con IA
                 </span>
             </div>
         </div>
     </section>
 
     <!-- Social Media Section -->
-    <section class="social section--gray" id="social">
+    <section class="social section--cream" id="social">
         <div class="container">
             <div class="social__header">
-                <span class="section__tag animate animate--fade-up">Social Media</span>
-                <h2 class="heading-2 animate animate--fade-up delay-1">Contenido social-first para TikTok/Instagram</h2>
+                <span class="section__number animate animate--fade-up">08</span>
+                <span class="section__label animate animate--fade-up delay-1">Social Media</span>
+                <h2 class="heading-2 animate animate--fade-up delay-2">Contenido social-first para TikTok/Instagram</h2>
             </div>
             <div class="social__grid">
                 <div class="social__item animate animate--fade-up delay-1">
-                    <div class="social__placeholder">
-                        <div class="social__placeholder-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-accent);">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </div>
-                        <span class="social__placeholder-label">POV</span>
-                        <span class="social__placeholder-title">"Primera vez en un MINI"</span>
+                    <img src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80" alt="POV Content" loading="lazy">
+                    <div class="social__item-overlay"></div>
+                    <div class="social__item-content">
+                        <span class="social__item-platform">POV</span>
+                        <span class="social__item-title">"Primera vez en un MINI"</span>
                     </div>
                 </div>
                 <div class="social__item animate animate--fade-up delay-2">
-                    <div class="social__placeholder">
-                        <div class="social__placeholder-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-accent);">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                        </div>
-                        <span class="social__placeholder-label">Story</span>
-                        <span class="social__placeholder-title">"Pruébate la actitud"</span>
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Story Content" loading="lazy">
+                    <div class="social__item-overlay"></div>
+                    <div class="social__item-content">
+                        <span class="social__item-platform">Story</span>
+                        <span class="social__item-title">"Pruébate la actitud"</span>
                     </div>
                 </div>
                 <div class="social__item animate animate--fade-up delay-3">
-                    <div class="social__placeholder">
-                        <div class="social__placeholder-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-accent);">
-                                <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                            </svg>
-                        </div>
-                        <span class="social__placeholder-label">Reel</span>
-                        <span class="social__placeholder-title">"Test drive challenge"</span>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80" alt="Reel Content" loading="lazy">
+                    <div class="social__item-overlay"></div>
+                    <div class="social__item-content">
+                        <span class="social__item-platform">Reel</span>
+                        <span class="social__item-title">"Test drive challenge"</span>
                     </div>
                 </div>
                 <div class="social__item animate animate--fade-up delay-4">
-                    <div class="social__placeholder">
-                        <div class="social__placeholder-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-accent);">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                        </div>
-                        <span class="social__placeholder-label">Friends</span>
-                        <span class="social__placeholder-title">"Tag a tu copiloto"</span>
+                    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&q=80" alt="Friends Content" loading="lazy">
+                    <div class="social__item-overlay"></div>
+                    <div class="social__item-content">
+                        <span class="social__item-platform">Friends</span>
+                        <span class="social__item-title">"Tag a tu copiloto"</span>
                     </div>
                 </div>
             </div>
@@ -1552,43 +1974,48 @@
     <section class="ai-role section" id="ai">
         <div class="container">
             <div class="ai-role__header">
-                <span class="section__tag animate animate--fade-up">Rol de la IA</span>
-                <h2 class="heading-2 animate animate--fade-up delay-1">Inteligencia Artificial en el Proceso Creativo</h2>
+                <span class="section__number animate animate--fade-up">09</span>
+                <span class="section__label animate animate--fade-up delay-1">Rol de la IA</span>
+                <h2 class="heading-2 animate animate--fade-up delay-2">Inteligencia Artificial en el Proceso Creativo</h2>
             </div>
             <div class="ai-role__grid">
-                <div class="ai-role__item animate animate--fade-up delay-1">
+                <div class="ai-role__card animate animate--fade-up delay-1">
                     <div class="ai-role__icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
                         </svg>
                     </div>
-                    <h3 class="ai-role__title">Prototipar Estética</h3>
-                    <p class="ai-role__text">Exploración visual rápida de territorios creativos</p>
+                    <h3 class="ai-role__card-title">Prototipar Estética</h3>
+                    <p class="ai-role__card-text">Exploración visual rápida de territorios creativos</p>
                 </div>
-                <div class="ai-role__item animate animate--fade-up delay-2">
+                <div class="ai-role__card animate animate--fade-up delay-2">
                     <div class="ai-role__icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                         </svg>
                     </div>
-                    <h3 class="ai-role__title">Explorar Emociones</h3>
-                    <p class="ai-role__text">Validación de insights y conexión emocional</p>
+                    <h3 class="ai-role__card-title">Explorar Emociones</h3>
+                    <p class="ai-role__card-text">Validación de insights y conexión emocional</p>
                 </div>
-                <div class="ai-role__item animate animate--fade-up delay-3">
+                <div class="ai-role__card animate animate--fade-up delay-3">
                     <div class="ai-role__icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21,15 16,10 5,21"></polyline>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21,15 16,10 5,21"/>
                         </svg>
                     </div>
-                    <h3 class="ai-role__title">Visualizar Campaña</h3>
-                    <p class="ai-role__text">Pre-producción visual antes del shoot</p>
+                    <h3 class="ai-role__card-title">Visualizar Campaña</h3>
+                    <p class="ai-role__card-text">Pre-producción visual antes del shoot</p>
                 </div>
             </div>
-            <p class="text-body text-muted animate animate--fade-up delay-4" style="text-align: center; margin-top: var(--space-xl); max-width: 700px; margin-left: auto; margin-right: auto;">La IA permitió prototipar estética, explorar emociones y visualizar la campaña antes de producción.</p>
+            <div class="ai-role__footer animate animate--fade-up delay-4">
+                <p class="text-lg ai-role__footer-text">
+                    La IA permitió prototipar estética, explorar emociones y visualizar la campaña antes de producción.
+                </p>
+            </div>
         </div>
     </section>
 
@@ -1596,37 +2023,38 @@
     <section class="results section--gray" id="resultados">
         <div class="container">
             <div class="results__header">
-                <span class="section__tag animate animate--fade-up">Resultados Esperados</span>
-                <h2 class="heading-2 animate animate--fade-up delay-1">Impacto Proyectado</h2>
+                <span class="section__number animate animate--fade-up">10</span>
+                <span class="section__label animate animate--fade-up delay-1">Resultados Esperados</span>
+                <h2 class="heading-2 animate animate--fade-up delay-2">Impacto Proyectado</h2>
             </div>
             <div class="results__grid">
-                <div class="results__item animate animate--fade-up delay-1">
+                <div class="results__card animate animate--fade-up delay-1">
                     <div class="results__icon">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
                         </svg>
                     </div>
-                    <h3 class="results__label">Mayor intención de test drive</h3>
-                    <p class="results__text">Conversión de interés a acción tangible</p>
+                    <h3 class="results__card-title">Mayor intención de test drive</h3>
+                    <p class="results__card-text">Conversión de interés a acción tangible</p>
                 </div>
-                <div class="results__item animate animate--fade-up delay-2">
+                <div class="results__card animate animate--fade-up delay-2">
                     <div class="results__icon">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                         </svg>
                     </div>
-                    <h3 class="results__label">Mayor engagement</h3>
-                    <p class="results__text">Conexión emocional con la audiencia joven</p>
+                    <h3 class="results__card-title">Mayor engagement</h3>
+                    <p class="results__card-text">Conexión emocional con la audiencia joven</p>
                 </div>
-                <div class="results__item animate animate--fade-up delay-3">
+                <div class="results__card animate animate--fade-up delay-3">
                     <div class="results__icon">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
                     </div>
-                    <h3 class="results__label">Percepción premium auténtica</h3>
-                    <p class="results__text">Reposicionamiento de marca accesible</p>
+                    <h3 class="results__card-title">Percepción premium auténtica</h3>
+                    <p class="results__card-text">Reposicionamiento de marca accesible</p>
                 </div>
             </div>
         </div>
@@ -1634,10 +2062,26 @@
 
     <!-- Closing Section -->
     <section class="closing" id="cierre">
+        <div class="closing__bg">
+            <img
+                src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1920&q=80"
+                alt="MINI Cooper"
+                class="closing__bg-image"
+                loading="lazy"
+            >
+            <div class="closing__bg-overlay"></div>
+            <div class="closing__bg-glow"></div>
+        </div>
         <div class="container">
             <div class="closing__content">
-                <h2 class="heading-display closing__title animate animate--scale">MINI no solo se maneja.<br><span>Se siente.</span></h2>
-                <a href="#" class="btn btn--outline-white animate animate--fade-up delay-2">Volver al portafolio</a>
+                <h2 class="heading-display closing__title animate animate--scale">
+                    MINI no solo se maneja.<br>
+                    <span class="closing__highlight">Se siente.</span>
+                </h2>
+                <div class="closing__cta animate animate--fade-up delay-2">
+                    <a href="#" class="btn btn--primary">Volver al portafolio</a>
+                    <a href="#hero" class="btn btn--outline-light">Ver de nuevo</a>
+                </div>
             </div>
         </div>
     </section>
@@ -1646,97 +2090,164 @@
     <footer class="footer">
         <div class="container">
             <div class="footer__inner">
-                <span class="footer__logo">Creative<span>.</span>Portfolio</span>
-                <span class="footer__text">Case Study — MINI Cooper "Pruébate la actitud"</span>
+                <span class="footer__logo">Portfolio<span>.</span></span>
+                <span class="footer__text">Case Study — MINI Cooper "Pruébate la actitud" — 2024</span>
             </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script>
-        // Navigation scroll effect
-        const nav = document.getElementById('nav');
-        let lastScrollY = window.scrollY;
+        // Wait for DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            // Custom cursor
+            const cursor = document.getElementById('cursor');
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.classList.add('nav--scrolled');
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function animateCursor() {
+                const dx = mouseX - cursorX;
+                const dy = mouseY - cursorY;
+                cursorX += dx * 0.15;
+                cursorY += dy * 0.15;
+                cursor.style.left = cursorX - 10 + 'px';
+                cursor.style.top = cursorY - 10 + 'px';
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // Cursor hover effects
+            const hoverElements = document.querySelectorAll('a, button, .moodboard__item, .social__item');
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+            });
+
+            // Navigation scroll effect
+            const nav = document.getElementById('nav');
+            let lastScrollY = window.scrollY;
+
+            function handleNavScroll() {
+                if (window.scrollY > 100) {
+                    nav.classList.add('nav--scrolled');
+                } else {
+                    nav.classList.remove('nav--scrolled');
+                }
+                lastScrollY = window.scrollY;
+            }
+
+            window.addEventListener('scroll', handleNavScroll, { passive: true });
+
+            // Hero loaded state
+            const hero = document.querySelector('.hero');
+            const heroImage = hero.querySelector('.hero__bg-image');
+
+            if (heroImage.complete) {
+                hero.classList.add('loaded');
             } else {
-                nav.classList.remove('nav--scrolled');
+                heroImage.addEventListener('load', () => hero.classList.add('loaded'));
             }
-            lastScrollY = window.scrollY;
-        });
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const offset = 80;
+                        const targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Intersection Observer for animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+
+            // Parallax effect for hero
+            const heroContent = document.querySelector('.hero__content');
+            const heroBg = document.querySelector('.hero__bg-image');
+
+            function handleHeroParallax() {
+                const scrollY = window.scrollY;
+                const heroHeight = hero.offsetHeight;
+
+                if (scrollY < heroHeight) {
+                    const parallaxValue = scrollY * 0.4;
+                    const opacityValue = 1 - (scrollY / heroHeight) * 0.6;
+                    heroContent.style.transform = `translateY(${parallaxValue}px)`;
+                    heroContent.style.opacity = opacityValue;
+
+                    if (heroBg) {
+                        heroBg.style.transform = `scale(${1 + scrollY * 0.0002})`;
+                    }
+                }
+            }
+
+            window.addEventListener('scroll', handleHeroParallax, { passive: true });
+
+            // Active nav link highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav__link');
+
+            function highlightNavLink() {
+                let current = '';
+                const scrollY = window.scrollY;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 200;
+                    const sectionHeight = section.clientHeight;
+
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', highlightNavLink, { passive: true });
+
+            // Image lazy loading with fade effect
+            const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+            lazyImages.forEach(img => {
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease';
+
+                if (img.complete) {
+                    img.style.opacity = '1';
+                } else {
+                    img.addEventListener('load', () => {
+                        img.style.opacity = '1';
                     });
-                }
-            });
-        });
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Observe all animated elements
-        document.querySelectorAll('.animate').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Parallax effect for hero (subtle)
-        const hero = document.querySelector('.hero');
-        const heroContent = document.querySelector('.hero__content');
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const heroHeight = hero.offsetHeight;
-
-            if (scrollY < heroHeight) {
-                const parallaxValue = scrollY * 0.3;
-                heroContent.style.transform = `translateY(${parallaxValue}px)`;
-                heroContent.style.opacity = 1 - (scrollY / heroHeight) * 0.5;
-            }
-        });
-
-        // Active nav link highlighting
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav__link');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.style.color = '';
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.style.color = 'var(--color-black)';
                 }
             });
         });
